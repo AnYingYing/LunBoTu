@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>轮播图一</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <style>
+  	body,ul,ol { margin:0;padding:0; } 
+  	div { width:470px;height:150px;position:relative;margin:20px auto;overflow:hidden; }
+  	ul { position:absolute;z-index:1; }
+  	ul li {  }
+  	ol { width:120px;position:absolute;z-index:2;right:20px;bottom:20px;cursor:pointer; } 
+  	ol li { list-style:none;width:20px;height:20px;float:left;background-color:white;
+  			color:#f60;text-align:center;line-height:20px;margin:0 2px; }
+  	ol li.active { background-color:#f60;color:white; }
+  </style>
+  
+  <script src="move.js"></script>
+  <script>
+  	window.onload = function () {
+  		
+  		var num1 = 0;//控制有序表
+  		var num2 = 0;//控制无序表
+  		
+  		//var isOne = 1;
+  		//var isFive = 0;
+  		
+  		var dingshi;
+  		
+  		var ul = document.getElementsByTagName("ul")[0];
+  		var ulLi = ul.getElementsByTagName("li");
+  		
+  		var ol = document.getElementsByTagName("ol")[0];
+  		var olLi = ol.getElementsByTagName("li");
+  		
+  		for(var i=0;i<olLi.length;i++){
+  			olLi[i].suoyin = i;
+  			olLi[i].onmouseover = function() {
+  				
+  				
+  				
+  				clearInterval(dingshi);
+  				
+  				if((num1==0) && (this.suoyin==4)){
+  					//往上翻
+  					startMove(ul,{ top:ulLi[0].offsetHeight });
+  					
+  					ulLi[4].style.position = "relative";
+  					ulLi[4].style.top =  -5*ulLi[0].offsetHeight+"px"; 
+  				} else if((num1==4) && (this.suoyin==0)){
+  					//往下翻
+  					startMove(ul,{ top:-5*(ulLi[0].offsetHeight) });
+  					
+  					ulLi[0].style.position = 'relative';
+  					ulLi[0].style.top = 5*ulLi[0].offsetHeight+"px";
+  					
+  				} else if((num1==0) && (this.suoyin==1)){
+  					//ulLi[0].style.top = 0+"px";
+  					ul.style.top = 0+"px";
+  					startMove(ul,{ top:-(this.suoyin)*(ulLi[0].offsetHeight) });
+  				} else if((num1==4) && (this.suoyin==3)){
+  					//ulLi[4].style.top = ul.length*ulLi[0].offsetHeight+"px";
+  					ul.style.top = 4*ulLi[0].offsetHeight+"px";
+  					startMove(ul,{ top:-(this.suoyin)*(ulLi[0].offsetHeight) });
+  				} else {
+  					ulLi[0].style.top = 0+"px";
+  					ulLi[4].style.top = 4*ulLi[0].offsetHeight+"px";
+  					
+  					startMove(ul,{ top:-(this.suoyin)*(ulLi[0].offsetHeight) });
+  					  				
+  				}
+  				
+  				num1 = this.suoyin;
+  				num2 = this.suoyin;
+  				/*
+  				if(num1==0){
+  					isOne = 1;
+  					isFive = 0;
+  				} else if(num1==olLi.length-1){
+  					isOne = 0;
+  					isFive = 1;
+  				} else {
+  					isOne = 0;
+  					isFive = 0;
+  				}*/
+  				
+  				for(var j=0;j<olLi.length;j++){
+  					olLi[j].className = "";	
+  								
+  				}
+  				
+  				this.className = "active";
+  				
+  				
+  				
+  			};
+  			
+  			olLi[i].onmouseout = function() {
+  			
+  				dingshi = setInterval(autoScroll,1500);
+  			
+  			};
+  		}
+  		//--------------------------------------------
+  		
+  		
+  		
+  		//--------------------------------------------
+  		var box = document.getElementById('box');
+  		
+  		dingshi = setInterval(autoScroll,1500);
+  		
+  		//box.onmouseover = function () {
+  			//clearInterval(dingshi);
+  		//};
+  		
+  		//box.onmouseout = function () {
+  			//dingshi = setInterval(autoScroll,1500);
+  		//};
+  		
+  		function autoScroll() {
+  			
+  			if(num1==0){
+  				
+  				num2 = 0;
+  				//ulLi[0].style.position = 'static';
+  				ulLi[0].style.top = 0+"px";
+  				ul.style.top = 0+"px";
+  				
+  			}
+  			
+  			if(num1==4){
+  				num1 = 0;
+  				
+  				ulLi[0].style.position = 'relative';
+  				ulLi[0].style.top = 5*ulLi[0].offsetHeight+"px";
+  				
+  			} else {
+  				num1 ++;
+  			}
+  			
+  			num2 ++;
+  			
+  			startMove(ul,{ top:-(num2)*(ulLi[0].offsetHeight) });
+  			
+  			for(var i=0;i<olLi.length;i++){
+  				olLi[i].className = "";
+  			}
+  			
+  			olLi[num1].className = "active";
+  		}
+  		
+  	};
+  </script>
+  
+  <body>
+    
+    <div id="box">
+    	<ul>
+    		<li style="display:block"><img src="images/1.jpg" /></li>
+    		<li><img src="images/2.jpg" /></li>
+    		<li><img src="images/3.jpg" /></li>
+    		<li><img src="images/4.jpg" /></li>
+    		<li><img src="images/5.jpg" /></li>
+    	</ul>
+    	
+    	<ol>
+    		<li class="active">1</li>
+    		<li>2</li>
+    		<li>3</li>
+    		<li>4</li>
+    		<li>5</li>
+    	</ol>
+    </div>
+    
+  </body>
+</html>
